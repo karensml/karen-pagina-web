@@ -1,890 +1,650 @@
-# Canção e Louvor - Top 15 Dashboard
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Canção & Louvor - Top 15 Dashboard</title>
-    <!-- Tailwind CSS Whitelisted Import -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Tributo - Canção e Louvor | Vida e Ministério</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
-        
+        /* Reset e Configurações Gerais */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        :root {
+            --bg-principal: #0a0e14;
+            --bg-secundario: #111823;
+            --bg-card: #1a2332;
+            --cor-ouro: #d4af37;
+            --cor-ouro-hover: #f3cf65;
+            --texto-claro: #f0f4f8;
+            --texto-escuro: #94a3b8;
+            --borda: rgba(212, 175, 55, 0.2);
+        }
+
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-            color: #f8fafc;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-principal);
+            color: var(--texto-claro);
+            line-height: 1.6;
         }
 
-        /* Glassmorphism Classes */
-        .glass-panel {
-
-            background: rgba(30, 27, 75, 0.5);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-b: 1px solid rgba(255, 255, 255, 0.08);
+        /* Barra de Navegação */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(10, 14, 20, 0.95);
+            border-bottom: 1px solid var(--borda);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
         }
 
-        .glass-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        nav .logo {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--cor-ouro);
+            letter-spacing: 1px;
         }
 
-        .glass-card:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(234, 179, 8, 0.3);
-            transform: translateY(-2px);
-            box-shadow: 0 12px 20px -10px rgba(234, 179, 8, 0.15);
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
         }
 
-
-        .glass-player {
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        nav ul li a {
+            color: var(--texto-claro);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
         }
 
-        .glass-modal {
-            background: rgba(15, 23, 42, 0.75);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        nav ul li a:hover {
+            color: var(--cor-ouro);
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
+        /* Cabeçalho Hero */
+        header {
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 8rem 2rem 4rem;
+            background: linear-gradient(rgba(10, 14, 20, 0.8), var(--bg-principal)), 
+                        radial-gradient(circle at center, #1e293b 0%, var(--bg-principal) 100%);
+            border-bottom: 1px solid var(--borda);
         }
 
-        ::-webkit-scrollbar-track {
-            background: #0f172a;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #334155;
-            border-radius: 3px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #475569;
+        header h1 {
+            font-size: 3rem;
+            color: var(--cor-ouro);
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
         }
 
-        /* Pure CSS Audio Wave Animation */
-        .wave-bar {
-            width: 3px;
-            background-color: #eab308;
-            border-radius: 2px;
-            transform-origin: bottom;
-        }
-        
-
-        .playing .wave-bar {
-            animation: bounce 1s ease-in-out infinite alternate;
-        }
-        .playing .wave-bar:nth-child(1) { animation-delay: 0.1s; height: 14px; }
-        .playing .wave-bar:nth-child(2) { animation-delay: 0.3s; height: 22px; }
-        .playing .wave-bar:nth-child(3) { animation-delay: 0.5s; height: 12px; }
-        .playing .wave-bar:nth-child(4) { animation-delay: 0.2s; height: 26px; }
-        .playing .wave-bar:nth-child(5) { animation-delay: 0.4s; height: 16px; }
-
-        .paused .wave-bar {
-            height: 6px !important;
-            animation: none;
+        header p {
+            font-size: 1.2rem;
+            color: var(--texto-escuro);
+            max-width: 600px;
         }
 
-        @keyframes bounce {
-            0% { transform: scaleY(0.3); }
-            100% { transform: scaleY(1.1); }
+        /* Seções Gerais */
+        section {
+            padding: 5rem 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--cor-ouro);
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 2px;
+            background-color: var(--cor-ouro);
+        }
+
+        /* Seção de Inspiração */
+        .inspiracao-container {
+            background-color: var(--bg-secundario);
+            border: 1px solid var(--borda);
+            border-radius: 8px;
+            padding: 3rem;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .inspiracao-container p {
+            font-size: 1.15rem;
+            font-style: italic;
+            color: var(--texto-claro);
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        /* Biografia e Linha do Tempo */
+        .bio-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .bio-texto p {
+            margin-bottom: 1.5rem;
+            color: var(--texto-escuro);
+            font-size: 1.05rem;
+            text-align: justify;
+        }
+
+        .bio-texto strong {
+            color: var(--texto-claro);
+        }
+
+        .timeline {
+            position: relative;
+            margin: 2rem auto;
+            padding: 1rem 0;
+            width: 100%;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            background-color: var(--borda);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -1px;
+        }
+
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            background-color: inherit;
+            width: 50%;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            right: -8px;
+            background-color: var(--bg-principal);
+            border: 2px solid var(--cor-ouro);
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .left { left: 0; }
+        .right { left: 50%; }
+
+        .right::after { left: -8px; }
+
+        .timeline-content {
+            padding: 1.5rem;
+            background-color: var(--bg-card);
+            position: relative;
+            border-radius: 6px;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .timeline-content h3 {
+            color: var(--cor-ouro);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Top 15 Músicas */
+        .music-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .music-card {
+            background-color: var(--bg-secundario);
+            border-left: 4px solid var(--cor-ouro);
+            padding: 1.5rem;
+            border-radius: 0 8px 8px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .music-card:hover {
+            transform: translateX(5px);
+            background-color: var(--bg-card);
+        }
+
+        .music-info .number {
+            font-size: 0.85rem;
+            color: var(--cor-ouro);
+            font-weight: bold;
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+
+        .music-info .title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .favorite-btn {
+            background: none;
+            border: none;
+            color: var(--texto-escuro);
+            cursor: pointer;
+            font-size: 1.3rem;
+            transition: color 0.3s ease;
+        }
+
+        .favorite-btn.active {
+            color: #ef4444;
+        }
+
+        /* Ministério em Números */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-box {
+            background-color: var(--bg-card);
+            border: 1px solid var(--borda);
+            padding: 2.5rem 1.5rem;
+            border-radius: 8px;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .stat-box:hover {
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.15);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--cor-ouro);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: var(--texto-escuro);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Mural de Frases */
+        .mural-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .frase-card {
+            background-color: var(--bg-secundario);
+            border: 1px solid rgba(212, 175, 55, 0.05);
+            padding: 2rem;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .frase-card::before {
+            content: "“";
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            font-size: 4rem;
+            color: rgba(212, 175, 55, 0.1);
+            font-family: serif;
+        }
+
+        .frase-text {
+            font-style: italic;
+            margin-bottom: 1rem;
+            color: var(--texto-claro);
+        }
+
+        .frase-autor {
+            font-size: 0.85rem;
+            color: var(--cor-ouro);
+            text-align: right;
+            font-weight: 600;
+        }
+
+        /* Rodapé */
+        footer {
+            background-color: var(--bg-secundario);
+            border-top: 1px solid var(--borda);
+            padding: 3rem 2rem;
+            text-align: center;
+            color: var(--texto-escuro);
+            font-size: 0.9rem;
+        }
+
+        footer p {
+            margin-bottom: 0.5rem;
+        }
+
+        footer .creditos {
+            color: var(--cor-ouro);
+        }
+
+        /* Caixa de Mensagem Customizada */
+        .toast-message {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--cor-ouro);
+            color: var(--texto-claro);
+            padding: 1rem 1.5rem;
+            border-radius: 6px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            display: none;
+            z-index: 2000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            header h1 {
+                font-size: 2.2rem;
+            }
+            .timeline::after {
+                left: 31px;
+            }
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            .timeline-item.right {
+                left: 0;
+            }
+            .timeline-item::after {
+                left: 23px;
+            }
+            .inspiracao-container {
+                padding: 1.5rem;
+            }
         }
     </style>
 </head>
+<body>
 
-<body class="min-h-screen pb-32">
+    <!-- Menu de Navegação -->
+    <nav>
+        <div class="logo">Canção & Louvor Fansite</div>
+        <ul>
+            <li><a href="#inspiracao">Inspiração</a></li>
+            <li><a href="#biografia">Biografia</a></li>
+            <li><a href="#top15">Top 15</a></li>
+            <li><a href="#numeros">Ministério</a></li>
+            <li><a href="#mural">Frases</a></li>
+        </ul>
+    </nav>
 
-    <!-- Header Banner -->
-    <header class="relative overflow-hidden w-full py-12 px-6 md:px-12 glass-panel">
-        <div class="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(234,179,8,0.08),transparent_50%)]"></div>
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
-            <div>
-                <div class="flex flex-wrap gap-2 items-center mb-3">
-                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-yellow-500/10 text-yellow-400 border border-yellow-500/20">
-                        <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
-                        Espaço de Adoração & Fé
-                    </span>
-                    <!-- New Interactive Biography Button -->
-                    <button onclick="openBioModal()" class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-white/5 text-slate-300 hover:bg-white/10 hover:text-yellow-400 border border-white/10 transition-all cursor-pointer">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        Conhecer a História da Dupla
-                    </button>
-                </div>
-                <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-white">
-
-                    Canção & <span class="text-yellow-400">Louvor</span>
-                </h1>
-                <p class="mt-2 text-slate-400 max-w-2xl text-sm md:text-base text-balance">
-                    Explore e medite com a coletânea das 15 músicas mais influentes e tocadas da renomada dupla de adoração. Acesse letras oficiais, vídeos e plataformas de streaming direto do seu workspace.
-                </p>
-            </div>
-
-            <!-- Stats Widgets -->
-            <div class="flex gap-4 w-full md:w-auto overflow-x-auto pb-2 md:pb-0">
-                <div class="p-4 rounded-2xl glass-card flex-1 md:flex-none min-w-[120px] text-center">
-                    <div class="text-2xl font-bold text-yellow-400">18+</div>
-                    <div class="text-xs text-slate-400 font-medium">Anos de Carreira</div>
-                </div>
-                <div class="p-4 rounded-2xl glass-card flex-1 md:flex-none min-w-[120px] text-center">
-                    <div class="text-2xl font-bold text-white">15</div>
-                    <div class="text-xs text-slate-400 font-medium">Super Sucessos</div>
-                </div>
-                <div class="p-4 rounded-2xl glass-card flex-1 md:flex-none min-w-[120px] text-center">
-                    <div class="text-2xl font-bold text-slate-300">Milhões</div>
-
-                    <div class="text-xs text-slate-400 font-medium">De Visualizações</div>
-                </div>
-            </div>
-        </div>
+    <!-- Cabeçalho Principal -->
+    <header>
+        <h1>Dupla Canção e Louvor</h1>
+        <p>Uma trajetória de fé, poesia celestial e adoração genuína que transcende gerações.</p>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 md:px-8 mt-10">
-        
-        <!-- Search and Interactive Section -->
-        <div class="mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div class="relative w-full sm:w-96">
-                <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                    <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                    </svg>
-                </span>
-                <input type="text" id="searchBar" onkeyup="filterSongs()" placeholder="Buscar por louvor ou artista..." 
-                       class="w-full pl-10 pr-4 py-2.5 bg-slate-900/60 border border-white/10 rounded-xl text-white placeholder-slate-400 text-sm focus:outline-none focus:border-yellow-500/50 transition-all">
-            </div>
+    <!-- Seção de Inspiração -->
+    <section id="inspiracao">
+        <h2 class="section-title">Minha Inspiração</h2>
+        <div class="inspiracao-container">
+            <p>
+                "A vida e o ministério da dupla Canção e Louvor servem como uma profunda fonte de inspiração diária para mim. Em cada melodia e em cada composição, há uma entrega que vai além do profissionalismo artístico; reflete uma intimidade sincera com o sagrado. Nos momentos de incerteza, suas letras atuam como um farol de esperança e calmaria, lembrando-me constantemente sobre dependência, fidelidade e o cuidado cuidadoso que nos sustenta todos os dias."
+            </p>
+        </div>
+    </section>
 
-            <div class="text-xs text-slate-400">
-                💡 Digite acima para filtrar o Top 15 ou descobrir louvores de outros ministérios.
+    <!-- Seção de Biografia -->
+    <section id="biografia">
+        <h2 class="section-title">Biografia e Trajetória</h2>
+        <div class="bio-grid">
+            <div class="bio-texto">
+                <p>
+                    A dupla <strong>Canção e Louvor</strong>, formada pelos irmãos <strong>Cláudio e Cláudia</strong>, é natural de Pernambuco e despontou como uma das maiores referências da música cristã contemporânea e do estilo pentecostal no Brasil. Desde a infância, os irmãos demonstraram uma forte inclinação musical e ministerial, crescendo e dedicando seus talentos nos altares de suas comunidades locais.
+                </p>
+                <p>
+                    O grande diferencial do ministério reside na composição. Com letras profundamente enraizadas em passagens bíblicas, reflexões sobre as fraquezas humanas e a soberania divina, as canções deixaram de ser apenas faixas de álbuns para se tornarem verdadeiros hinos de conforto nos lares de milhões de pessoas. A harmonia perfeita entre as vozes e a simplicidade com que conduzem o ministério consolidaram sua marca no cenário religioso.
+                </p>
             </div>
         </div>
 
-        <!-- Top 15 Songs Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="songsContainer">
-            
-            <!-- Song 1 -->
-            <div class="song-card p-5 rounded-2xl glass-card flex flex-col justify-between gap-4 cursor-pointer border-l-4 border-l-yellow-500" data-title="Eu Cuido de Ti" onclick="selectTrack(0)">
-                <div class="flex items-start justify-between">
-                    <div class="flex gap-4 items-center">
-                        <span class="w-8 h-8 rounded-lg bg-yellow-500/20 text-yellow-400 flex items-center justify-center font-bold text-sm">01</span>
-                        <div>
-                            <h3 class="font-bold text-white text-lg leading-snug tracking-wide">Eu Cuido de Ti</h3>
-                            <p class="text-xs text-slate-400 mt-0.5">Canção & Louvor</p>
-                        </div>
-                    </div>
-                    <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-yellow-500/20 text-yellow-400">Favorito</span>
-
-                </div>
-                <div class="flex items-center justify-between border-t border-white/5 pt-3 mt-1">
-                    <span class="text-xs font-medium text-slate-500">Letras & Cifras</span>
-                    <a href="https://letras.mus.br" target="_blank" onclick="event.stopPropagation();" class="inline-flex items-center gap-1 text-xs text-yellow-400 font-semibold hover:underline">
-                        Letra Completa
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                    </a>
+        <div class="timeline">
+            <div class="timeline-item left">
+                <div class="timeline-content">
+                    <h3>Primeiros Passos</h3>
+                    <p>Início da jornada musical na infância, cantando em igrejas locais e desenvolvendo as primeiras composições autorais.</p>
                 </div>
             </div>
-
-            <!-- Song 2 -->
-            <div class="song-card p-5 rounded-2xl glass-card flex flex-col justify-between gap-4 cursor-pointer" data-title="Calmaria" onclick="selectTrack(1)">
-                <div class="flex items-start justify-between">
-                    <div class="flex gap-4 items-center">
-                        <span class="w-8 h-8 rounded-lg bg-white/5 text-slate-300 flex items-center justify-center font-bold text-sm">02</span>
-                        <div>
-                            <h3 class="font-bold text-white text-lg leading-snug tracking-wide">Calmaria</h3>
-                            <p class="text-xs text-slate-400 mt-0.5">Canção & Louvor</p>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="flex items-center justify-between border-t border-white/5 pt-3 mt-1">
-                    <span class="text-xs font-medium text-slate-500">Letras & Cifras</span>
-                    <a href="https://letras.mus.br" target="_blank" onclick="event.stopPropagation();" class="inline-flex items-center gap-1 text-xs text-yellow-400 font-semibold hover:underline">
-                        Letra Completa
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                    </a>
+            <div class="timeline-item right">
+                <div class="timeline-content">
+                    <h3>Gravações Iniciais</h3>
+                    <p>Lançamento dos primeiros trabalhos independentes, espalhando suas canções pelo Nordeste brasileiro.</p>
                 </div>
             </div>
-
-            <!-- Song 3 -->
-            <div class="song-card p-5 rounded-2xl glass-card flex flex-col justify-between gap-4 cursor-pointer" data-title="Dependente" onclick="selectTrack(2)">
-                <div class="flex items-start justify-between">
-                    <div class="flex gap-4 items-center">
-                        <span class="w-8 h-8 rounded-lg bg-white/5 text-slate-300 flex items-center justify-center font-bold text-sm">03</span>
-                        <div>
-                            <h3 class="font-bold text-white text-lg leading-snug tracking-wide">Dependente</h3>
-                            <p class="text-xs text-slate-400 mt-0.5">Canção & Louvor</p>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="flex items-center justify-between border-t border-white/5 pt-3 mt-1">
-                    <span class="text-xs font-medium text-slate-500">Letras & Cifras</span>
-                    <a href="https://letras.mus.br" target="_blank" onclick="event.stopPropagation();" class="inline-flex items-center gap-1 text-xs text-yellow-400 font-semibold hover:underline">
-                        Letra Completa
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                    </a>
+            <div class="timeline-item left">
+                <div class="timeline-content">
+                    <h3>Reconhecimento Nacional</h3>
+                    <p>Consolidação de sucessos que romperam fronteiras regionais, alcançando marcos significativos em plataformas digitais.</p>
                 </div>
             </div>
-
-            <!-- Song 4 -->
-            <div class="song-card p-5 rounded-2xl glass-card flex flex-col justify-between gap-4 cursor-pointer" data-title="A Fornalha" onclick="selectTrack(3)">
-                <div class="flex items-start justify-between">
-                    <div class="flex gap-4 items-center">
-                        <span class="w-8 h-8 rounded-lg bg-white/5 text-slate-300 flex items-center justify-center font-bold text-sm">04</span>
-                        <div>
-                            <h3 class="font-bold text-white text-lg leading-snug tracking-wide">A Fornalha</h3>
-
-                            <p class="text-xs text-slate-400 mt-0.5">Canção & Louvor</p>
-                        </div>
-                    </div>
+            <div class="timeline-item right">
+                <div class="timeline-content">
+                    <h3>Impacto Atual</h3>
+                    <p>A dupla segue viajando por todo o país e exterior, servindo de inspiração através de lives, conferências e novos lançamentos estruturados.</p>
                 </div>
-                <div class="flex items-center justify-between border-t border-white/5 pt-3 mt-1">
-                    <span class="text-xs font-medium text-slate-500">Letras & Cifras</span>
-                    <a href="https://letras.mus.br" target="_blank" onclick="event.stopPropagation();" class="inline-flex items-center gap-1 text-xs text-yellow-400 font-semibold hover:underline">
-                        Letra Completa
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Song 5 -->
-            <div class="song-card p-5 rounded-2xl glass-card flex flex-col justify-between gap-4 cursor-pointer" data-title="Clonados" onclick="selectTrack(4)">
-                <div class="flex items-start justify-between">
-                    <div class="flex gap-4 items-center">
-                        <span class="w-8 h-8 rounded-lg bg-white/5 text-slate-300 flex items-center justify-center font-bold text-sm">05</span>
-                        <div>
-
-                            <h3 class="font-bold text-white text-lg leading-snug tracking-wide">Clonados</h3>
-                            <p class="text-xs text-slate-400 mt-0.5">Canção & Louvor</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex items-center justify-between border-t border-white/5 pt-3 mt-1">
-                    <span class="text-xs font-medium text-slate-500">Letras & Cifras</span>
-                    <a href="https://letras.mus.br" target="_blank" onclick="event.stopPropagation();" class="inline-flex items-center gap-1 text-xs text-yellow-400 font-semibold hover:underline">
-                        Letra Completa
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Song 6 -->
-            <div class="song-card p-5 rounded-2xl glass-card flex flex-col justify-between gap-4 cursor-pointer" data-title="Silêncio" onclick="selectTrack(5)">
-                <div class="flex items-start justify-between">
-                    <div class="flex gap-4 items-center">
-                        <span class="w-8 h-8 rounded-lg bg-white/5 text-slate-300 flex items-center justify-center font-bold text-sm">06</span>
-
-                        <div>
-                            <h3 class="font-bold text-white text-lg leading-snug tracking-wide">Silêncio</h3>
-                            <p class="text-xs text-slate-400 mt-0.5">Canção & Louvor</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex items-center justify-between border-t border-white/5 pt-3 mt-1">
-                    <span class="text-xs font-medium text-slate-500">Letras & Cifras</span>
-                    <a href="https://letras.mus.br" target="_blank" onclick="event.stopPropagation();" class="inline-flex items-center gap-1 text-xs text-yellow-400 font-semibold hover:underline">
-                        Letra Completa
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Song 7 -->
-            <div class="song-card p-5 rounded-2xl glass-card flex flex-col justify-between gap-4 cursor-pointer" data-title="Adorador" onclick="selectTrack(6)">
-                <div class="flex items-start justify-between">
-                    <div class="flex gap-4 items-center">
-
-                        <span class="w-8 h-8 rounded-lg bg-white/5 text-slate-300 flex items-center justify-center font-bold text-sm">07</span>
-                        <div>
-                            <h3 class="font-bold text-white text-lg leading-snug tracking-wide">Adorador</h3>
-                            <p class="text-xs text-slate-400 mt-0.5">Canção & Louvor</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex items-center justify-between border-t border-white/5 pt-3 mt-1">
-                    <span class="text-xs font-medium text-slate-500">Letras & Cifras</span>
-                    <a href="https://letras.mus.br" target="_blank" onclick="event.stopPropagation();" class="inline-flex items-center gap-1 text-xs text-yellow-400 font-semibold hover:underline">
-                        Letra Completa
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Song 8 -->
-            <div class="song-card p-5 rounded-2xl glass-card flex flex-col justify-between gap-4 cursor-pointer" data-title="O Alvo" onclick="selectTrack(7)">
-                <div class="flex items-start justify-between">
-
-                    <div class="flex gap-4 items-center">
-                        <span class="w-8 h-8 rounded-lg bg-white/5 text-slate-300 flex items-center justify-center font-bold text-sm">08</span>
-                        <div>
-                            <h3 class="font-bold text-white text-lg leading-snug tracking-wide">O Alvo</h3>
-                            <p class="text-xs text-slate-400 mt-0.5">Canção & Louvor</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex items-center justify-between border-t border-white/5 pt-3 mt-1">
-                    <span class="text-xs font-medium text-slate-500">Letras & Cifras</span>
-                    <a href="https://letras.mus.br" target="_blank" onclick="event.stopPropagation();" class="inline-flex items-center gap-1 text-xs text-yellow-400 font-semibold hover:underline">
-                        Letra Completa
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Song 9 -->
-            <div class="song-card p-5 rounded-2xl glass-card flex flex-col justify-between gap-4 cursor-pointer" data-title="Mar de Vidro" onclick="selectTrack(8)">
-
-                <div class="flex items-start justify-between">
-                    <div class="flex gap-4 items-center">
-                        <span class="w-8 h-8 rounded-lg bg-white/5 text-slate-300 flex items-center justify-center font-bold text-sm">09</span>
-                        <div>
-                            <h3 class="font-bold text-white text-lg leading-snug tracking-wide">Mar de Vidro</h3>
-                            <p class="text-xs text-slate-400 mt-0.5">Canção & Louvor</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex items-center justify-between border-t border-white/5 pt-3 mt-1">
-                    <span class="text-xs font-medium text-slate-500">Letras & Cifras</span>
-                    <a href="https://letras.mus.br" target="_blank" onclick="event.stopPropagation();" class="inline-flex items-center gap-1 text-xs text-yellow-400 font-semibold hover:underline">
-                        Letra Completa
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Song 10 -->
-
-            <div class="song-card p-5 rounded-2xl glass-card flex flex-col justify-between gap-4 cursor-pointer" data-title="Profetiza" onclick="selectTrack(9)">
-                <div class="flex items-start justify-between">
-                    <div class="flex gap-4 items-center">
-                        <span class="w-8 h-8 rounded-lg bg-white/5 text-slate-300 flex items-center justify-center font-bold text-sm">10</span>
-                        <div>
-                            <h3 class="font-bold text-white text-lg leading-snug tracking-wide">Profetiza</h3>
-                            <p class="text-xs text-slate-400 mt-0.5">Canção & Louvor</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex items-center justify-between border-t border-white/5 pt-3 mt-1">
-                    <span class="text-xs font-medium text-slate-500">Letras & Cifras</span>
-                    <a href="https://letras.mus.br" target="_blank" onclick="event.stopPropagation();" class="inline-flex items-center gap-1 text-xs text-yellow-400 font-semibold hover:underline">
-                        Letra Completa
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                    </a>
-                </div>
-            </div>
-
-
-            <!-- Song 11 -->
-            <div class="song-card p-5 rounded-2xl glass-card flex flex-col justify-between gap-4 cursor-pointer" data-title="Rei e Senhor" onclick="selectTrack(10)">
-                <div class="flex items-start justify-between">
-                    <div class="flex gap-4 items-center">
-                        <span class="w-8 h-8 rounded-lg bg-white/5 text-slate-300 flex items-center justify-center font-bold text-sm">11</span>
-                        <div>
-                            <h3 class="font-bold text-white text-lg leading-snug tracking-wide">Rei e Senhor</h3>
-                            <p class="text-xs text-slate-400 mt-0.5">Canção & Louvor</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex items-center justify-between border-t border-white/5 pt-3 mt-1">
-                    <span class="text-xs font-medium text-slate-500">Letras & Cifras</span>
-                    <a href="https://letras.mus.br" target="_blank" onclick="event.stopPropagation();" class="inline-flex items-center gap-1 text-xs text-yellow-400 font-semibold hover:underline">
-                        Letra Completa
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                    </a>
-                </div>
-            </div>
-
-
-            <!-- Song 12 -->
-            <div class="song-card p-5 rounded-2xl glass-card flex flex-col justify-between gap-4 cursor-pointer" data-title="O Galileu" onclick="selectTrack(11)">
-                <div class="flex items-start justify-between">
-                    <div class="flex gap-4 items-center">
-                        <span class="w-8 h-8 rounded-lg bg-white/5 text-slate-300 flex items-center justify-center font-bold text-sm">12</span>
-                        <div>
-                            <h3 class="font-bold text-white text-lg leading-snug tracking-wide">O Galileu</h3>
-                            <p class="text-xs text-slate-400 mt-0.5">Canção & Louvor</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex items-center justify-between border-t border-white/5 pt-3 mt-1">
-                    <span class="text-xs font-medium text-slate-500">Letras & Cifras</span>
-                    <a href="https://letras.mus.br" target="_blank" onclick="event.stopPropagation();" class="inline-flex items-center gap-1 text-xs text-yellow-400 font-semibold hover:underline">
-                        Letra Completa
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                    </a>
-                </div>
-            </div>
-
-
-            <!-- Song 13 -->
-            <div class="song-card p-5 rounded-2xl glass-card flex flex-col justify-between gap-4 cursor-pointer" data-title="Meus Joelhos" onclick="selectTrack(12)">
-                <div class="flex items-start justify-between">
-                    <div class="flex gap-4 items-center">
-                        <span class="w-8 h-8 rounded-lg bg-white/5 text-slate-300 flex items-center justify-center font-bold text-sm">13</span>
-                        <div>
-                            <h3 class="font-bold text-white text-lg leading-snug tracking-wide">Meus Joelhos</h3>
-                            <p class="text-xs text-slate-400 mt-0.5">Canção & Louvor</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex items-center justify-between border-t border-white/5 pt-3 mt-1">
-                    <span class="text-xs font-medium text-slate-500">Letras & Cifras</span>
-                    <a href="https://letras.mus.br" target="_blank" onclick="event.stopPropagation();" class="inline-flex items-center gap-1 text-xs text-yellow-400 font-semibold hover:underline">
-                        Letra Completa
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                    </a>
-                </div>
-            </div>
-
-
-            <!-- Song 14 -->
-            <div class="song-card p-5 rounded-2xl glass-card flex flex-col justify-between gap-4 cursor-pointer" data-title="Governador do Universo" onclick="selectTrack(13)">
-                <div class="flex items-start justify-between">
-                    <div class="flex gap-4 items-center">
-                        <span class="w-8 h-8 rounded-lg bg-white/5 text-slate-300 flex items-center justify-center font-bold text-sm">14</span>
-                        <div>
-                            <h3 class="font-bold text-white text-lg leading-snug tracking-wide text-base md:text-lg">Governador do Universo</h3>
-                            <p class="text-xs text-slate-400 mt-0.5">Canção & Louvor</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex items-center justify-between border-t border-white/5 pt-3 mt-1">
-                    <span class="text-xs font-medium text-slate-500">Letras & Cifras</span>
-                    <a href="https://letras.mus.br" target="_blank" onclick="event.stopPropagation();" class="inline-flex items-center gap-1 text-xs text-yellow-400 font-semibold hover:underline">
-                        Letra Completa
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                    </a>
-                </div>
-            </div>
-
-
-            <!-- Song 15 -->
-            <div class="song-card p-5 rounded-2xl glass-card flex flex-col justify-between gap-4 cursor-pointer" data-title="Mesa no Deserto" onclick="selectTrack(14)">
-                <div class="flex items-start justify-between">
-                    <div class="flex gap-4 items-center">
-                        <span class="w-8 h-8 rounded-lg bg-white/5 text-slate-300 flex items-center justify-center font-bold text-sm">15</span>
-                        <div>
-                            <h3 class="font-bold text-white text-lg leading-snug tracking-wide">Mesa no Deserto</h3>
-                            <p class="text-xs text-slate-400 mt-0.5">Canção & Louvor</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex items-center justify-between border-t border-white/5 pt-3 mt-1">
-                    <span class="text-xs font-medium text-slate-500">Letras & Cifras</span>
-                    <a href="https://letras.mus.br" target="_blank" onclick="event.stopPropagation();" class="inline-flex items-center gap-1 text-xs text-yellow-400 font-semibold hover:underline">
-                        Letra Completa
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                    </a>
-                </div>
-            </div>
-
-
-        </div>
-
-        <!-- Section For Other Praises (Extensível e Dinâmico) -->
-        <div id="otherSongsSection" class="mt-12 hidden">
-            <h2 class="text-xl font-bold text-yellow-400/90 mb-4 flex items-center gap-2 tracking-wide">
-                <svg class="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
-                </svg>
-                Outros Louvores Encontrados
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="otherSongsContainer">
-                <!-- Injetado dinamicamente via JS -->
             </div>
         </div>
+    </section>
 
-        <!-- Global Search Fallback State -->
-        <div id="noResultsContainer" class="hidden w-full transition-all">
-            <!-- Injetado dinamicamente quando nada for achado localmente -->
+    <!-- Seção Top 15 Músicas -->
+    <section id="top15">
+        <h2 class="section-title">Top 15 Melhores Músicas</h2>
+        <div class="music-list">
+            <div class="music-card">
+                <div class="music-info">
+                    <span class="number">#01</span>
+                    <span class="title">Me Rendo aos Teus Pés</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this, 'Me Rendo aos Teus Pés')">❤</button>
+            </div>
+            <div class="music-card">
+                <div class="music-info">
+                    <span class="number">#02</span>
+                    <span class="title">Comum e Imperfeito</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this, 'Comum e Imperfeito')">❤</button>
+            </div>
+            <div class="music-card">
+                <div class="music-info">
+                    <span class="number">#03</span>
+                    <span class="title">Eu Sou Mistério</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this, 'Eu Sou Mistério')">❤</button>
+            </div>
+            <div class="music-card">
+                <div class="music-info">
+                    <span class="number">#04</span>
+                    <span class="title">Rei e Santo</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this, 'Rei e Santo')">❤</button>
+            </div>
+            <div class="music-card">
+                <div class="music-info">
+                    <span class="number">#05</span>
+                    <span class="title">Taxados Como Loucos</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this, 'Taxados Como Loucos')">❤</button>
+            </div>
+            <div class="music-card">
+                <div class="music-info">
+                    <span class="number">#06</span>
+                    <span class="title">Dias Atuais</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this, 'Dias Atuais')">❤</button>
+            </div>
+            <div class="music-card">
+                <div class="music-info">
+                    <span class="number">#07</span>
+                    <span class="title">Jovens no Limite</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this, 'Jovens no Limite')">❤</button>
+            </div>
+            <div class="music-card">
+                <div class="music-info">
+                    <span class="number">#08</span>
+                    <span class="title">Eu Tenho um Dono</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this, 'Eu Tenho um Dono')">❤</button>
+            </div>
+            <div class="music-card">
+                <div class="music-info">
+                    <span class="number">#09</span>
+                    <span class="title">Calmaria</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this, 'Calmaria')">❤</button>
+            </div>
+            <div class="music-card">
+                <div class="music-info">
+                    <span class="number">#10</span>
+                    <span class="title">Dependente</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this, 'Dependente')">❤</button>
+            </div>
+            <div class="music-card">
+                <div class="music-info">
+                    <span class="number">#11</span>
+                    <span class="title">Eu Cuido de Ti</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this, 'Eu Cuido de Ti')">❤</button>
+            </div>
+            <div class="music-card">
+                <div class="music-info">
+                    <span class="number">#12</span>
+                    <span class="title">Maravilhoso</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this, 'Maravilhoso')">❤</button>
+            </div>
+            <div class="music-card">
+                <div class="music-info">
+                    <span class="number">#13</span>
+                    <span class="title">A Ti os Teus</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this, 'A Ti os Teus')">❤</button>
+            </div>
+            <div class="music-card">
+                <div class="music-info">
+                    <span class="number">#14</span>
+                    <span class="title">O Que Tu Tens</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this, 'O Que Tu Tens')">❤</button>
+            </div>
+            <div class="music-card">
+                <div class="music-info">
+                    <span class="number">#15</span>
+                    <span class="title">O Noivo Vem</span>
+                </div>
+                <button class="favorite-btn" onclick="toggleFavorite(this, 'O Noivo Vem')">❤</button>
+            </div>
         </div>
+    </section>
 
-
-    </main>
-
-    <!-- Floating Audio Player Bar -->
-    <footer class="fixed bottom-0 left-0 right-0 h-24 glass-player z-40 px-4 md:px-8 flex items-center">
-        <div class="max-w-7xl mx-auto w-full flex items-center justify-between gap-4">
-            
-            <!-- Track Info Left Side -->
-            <div class="flex items-center gap-4 w-1/3 min-w-[150px]">
-                <div id="playerWaveContainer" class="paused flex items-end gap-0.5 h-7 w-8 justify-center">
-                    <div class="wave-bar"></div>
-                    <div class="wave-bar"></div>
-                    <div class="wave-bar"></div>
-                    <div class="wave-bar"></div>
-                    <div class="wave-bar"></div>
-                </div>
-                <div class="truncate">
-                    <h4 id="currentTrackTitle" class="font-bold text-white text-sm truncate">Eu Cuido de Ti</h4>
-                    <p id="currentTrackArtist" class="text-xs text-slate-400 truncate">Canção & Louvor</p>
-                </div>
-
+    <!-- Seção Ministério em Números -->
+    <section id="numeros">
+        <h2 class="section-title">Ministério em Números</h2>
+        <div class="stats-grid">
+            <div class="stat-box">
+                <div class="stat-number">15+</div>
+                <div class="stat-label">Anos de Carreira</div>
             </div>
-
-            <!-- Central Playback Controls & Timeline -->
-            <div class="flex flex-col items-center gap-2 flex-1 max-w-xl">
-                <!-- Controls -->
-                <div class="flex items-center gap-6">
-                    <button onclick="prevTrack()" class="text-slate-400 hover:text-white transition-colors" title="Faixa Anterior">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
-                    </button>
-                    <button onclick="togglePlayback()" id="mainPlayBtn" class="w-10 h-10 rounded-full bg-yellow-400 text-slate-900 flex items-center justify-center hover:scale-105 transition-transform shadow-lg shadow-yellow-500/20" title="Play / Pause">
-                        <svg id="playIcon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                        <svg id="pauseIcon" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-                    </button>
-                    <button onclick="nextTrack()" class="text-slate-400 hover:text-white transition-colors" title="Próxima Faixa">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6zm9-12v12h2V6z"/></svg>
-                    </button>
-                </div>
-                <!-- Timeline Slider -->
-                <div class="w-full flex items-center gap-3 text-[11px] font-medium text-slate-400">
-
-                    <span id="currentTimeLabel">00:00</span>
-                    <div class="relative flex-1 group">
-                        <input type="range" id="timelineSlider" min="0" max="100" value="0" oninput="seekTimeline(this.value)"
-                               class="w-full h-1 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-yellow-400 group-hover:h-1.5 transition-all">
-                    </div>
-                    <span id="totalTimeLabel">05:12</span>
-                </div>
+            <div class="stat-box">
+                <div class="stat-number">Milhões</div>
+                <div class="stat-label">De Visualizações</div>
             </div>
-
-            <!-- Volume Control Right Side -->
-            <div class="flex items-center justify-end gap-2 w-1/3 min-w-[100px]">
-                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072M18.364 5.636a9 9 0 010 12.728M12 18.75V5.25L7.75 9.5H4.5v5h3.25L12 18.75z"/>
-                </svg>
-                <input type="range" min="0" max="100" value="80" class="w-16 md:w-24 h-1 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-yellow-400">
+            <div class="stat-box">
+                <div class="stat-number">Milhares</div>
+                <div class="stat-label">De Vidas Tocadas</div>
             </div>
-
+            <div class="stat-box">
+                <div class="stat-number">Centenas</div>
+                <div class="stat-label">De Composições</div>
+            </div>
         </div>
+    </section>
+
+    <!-- Seção Mural de Frases Marcantes -->
+    <section id="mural">
+        <h2 class="section-title">Mensagens Marcantes</h2>
+        <div class="mural-grid">
+            <div class="frase-card">
+                <p class="frase-text">"Não temas, porque eu sou contigo; não te assombres, porque eu sou o teu Deus; eu te fortaleço, e te ajudo, e te sustento com a destra da minha justiça."</p>
+                <div class="frase-autor">Base Temática do Ministério</div>
+            </div>
+            <div class="frase-card">
+                <p class="frase-text">"Mesmo sendo comum e imperfeito, o agir extraordinário do Criador escolhe as coisas simples para manifestar a Sua glória e o Seu profundo mistério."</p>
+                <div class="frase-autor">Reflexão Devocional</div>
+            </div>
+            <div class="frase-card">
+                <p class="frase-text">"A calmaria não significa ausência de tempestade externa, mas sim a certeza absoluta e inabalável de quem está no controle do barco."</p>
+                <div class="frase-autor">Mensagem de Fé</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rodapé -->
+    <footer>
+        <p>&copy; 2026 - Página de Homenagem e Inspiração Pessoal.</p>
+        <p>Criado para celebrar a história de <span class="creditos">Canção e Louvor</span>.</p>
     </footer>
 
+    <!-- Notificação Customizada (Toast) -->
+    <div id="toast" class="toast-message"></div>
 
-    <!-- Interactive Biography Modal Panel -->
-    <div id="bioModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
-        <div class="glass-modal max-w-2xl w-full rounded-3xl p-6 md:p-8 relative overflow-hidden border border-white/10 max-h-[85vh] overflow-y-auto shadow-2xl">
-            
-            <!-- Close trigger -->
-            <button onclick="closeBioModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white bg-white/5 hover:bg-white/10 p-2 rounded-xl transition-all cursor-pointer">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                </svg>
-            </button>
-
-            <!-- Modal Heading -->
-            <div class="mb-6">
-                <span class="text-xs font-bold text-yellow-400 tracking-widest uppercase">Quem São Eles</span>
-                <h2 class="text-2xl md:text-3xl font-extrabold text-white mt-1">Cláudia Canção & Cláudio Louvor</h2>
-                <div class="w-12 h-1 bg-yellow-400 rounded-full mt-3"></div>
-            </div>
-
-            <!-- Biography Context Body -->
-
-            <div class="text-slate-300 text-sm md:text-base space-y-4 leading-relaxed">
-                <p>
-                    Originários de Pernambuco, os irmãos <strong>Cláudia Canção</strong> e <strong>Cláudio Louvor</strong> compõem uma das duplas mais queridas e reverenciadas da música cristã contemporânea no Brasil. Com mais de 18 anos dedicados ao ministério de adoração, eles se destacam de forma única no cenário nacional.
-                </p>
-                <p>
-                    O grande diferencial do projeto reside nas composições autorais. Cláudia Canção assina letras profundas e poéticas que servem de alento e reflexão para milhões de pessoas. Músicas icônicas como <em>"Eu Cuido de Ti"</em>, <em>"Calmaria"</em> e <em>"Dependente"</em> tornaram-se verdadeiros hinos de conforto espiritual nas igrejas de todo o país.
-                </p>
-                
-                <!-- Quick Info Cards inside Modal -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                    <div class="p-4 rounded-xl bg-white/5 border border-white/5">
-                        <h4 class="text-yellow-400 font-bold text-sm mb-1">✍️ Identidade Autoral</h4>
-                        <p class="text-xs text-slate-400 leading-normal">Praticamente todo o repertório musical é gerado por inspirações próprias, consolidando Cláudia como uma prolífica compositora.</p>
-                    </div>
-                    <div class="p-4 rounded-xl bg-white/5 border border-white/5">
-                        <h4 class="text-yellow-400 font-bold text-sm mb-1">🌍 Alcance Global</h4>
-                        <p class="text-xs text-slate-400 leading-normal">Suas canções ultrapassam fronteiras denominacionais, sendo interpretadas por corais, ministérios locais e grandes solistas.</p>
-                    </div>
-                </div>
-
-
-                <p class="text-xs text-slate-400 pt-2 italic border-t border-white/5">
-                    *Nota: Este painel foi construído para celebrar o impacto cultural e lírico de suas composições no ambiente congregacional.
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Interactive Workspace State Script -->
     <script>
-        // Expanded Dataset combining Top 15 and popular external worship songs
-        const playlist = [
-            // Canção & Louvor (Indexes 0-14)
-            { title: "Eu Cuido de Ti", duration: "05:12", seconds: 312, artist: "Canção & Louvor" },
-            { title: "Calmaria", duration: "04:45", seconds: 285, artist: "Canção & Louvor" },
-            { title: "Dependente", duration: "05:30", seconds: 330, artist: "Canção & Louvor" },
-            { title: "A Fornalha", duration: "04:58", seconds: 298, artist: "Canção & Louvor" },
-            { title: "Clonados", duration: "05:15", seconds: 315, artist: "Canção & Louvor" },
-            { title: "Silêncio", duration: "04:22", seconds: 262, artist: "Canção & Louvor" },
-            { title: "Adorador", duration: "05:01", seconds: 301, artist: "Canção & Louvor" },
-
-            { title: "O Alvo", duration: "04:37", seconds: 277, artist: "Canção & Louvor" },
-            { title: "Mar de Vidro", duration: "05:10", seconds: 310, artist: "Canção & Louvor" },
-            { title: "Profetiza", duration: "04:50", seconds: 290, artist: "Canção & Louvor" },
-            { title: "Rei e Senhor", duration: "04:40", seconds: 280, artist: "Canção & Louvor" },
-            { title: "O Galileu", duration: "05:25", seconds: 325, artist: "Canção & Louvor" },
-            { title: "Meus Joelhos", duration: "04:18", seconds: 258, artist: "Canção & Louvor" },
-            { title: "Governador do Universo", duration: "06:02", seconds: 362, artist: "Canção & Louvor" },
-            { title: "Mesa no Deserto", duration: "04:55", seconds: 295, artist: "Canção & Louvor" },
-            
-            // Outros Louvores Populares (Indexes 15+)
-            { title: "Raridade", duration: "04:55", seconds: 295, artist: "Anderson Freire", source: "Letras.mus.br", href: "https://letras.mus.br" },
-            { title: "A Casa É Sua", duration: "05:40", seconds: 340, artist: "Casa Worship", source: "Letras.mus.br", href: "https://letras.mus.br" },
-            { title: "Lugar Secreto", duration: "06:12", seconds: 372, artist: "Gabriela Rocha", source: "Letras.mus.br", href: "https://letras.mus.br" },
-            { title: "Bondade de Deus", duration: "04:50", seconds: 290, artist: "Isaías Saad", source: "Letras.mus.br", href: "https://letras.mus.br" },
-            { title: "Todavia Me Alegrarei", duration: "04:42", seconds: 282, artist: "Samuel Messias", source: "Letras.mus.br", href: "https://letras.mus.br" },
-            { title: "És O Mesmo", duration: "05:18", seconds: 318, artist: "Morada", source: "Letras.mus.br", href: "https://letras.mus.br" },
-            { title: "Alívio", duration: "04:15", seconds: 255, artist: "Jessé Aguiar", source: "Letras.mus.br", href: "https://letras.mus.br" }
-        ];
-
-
-        let currentTrackIndex = 0;
-        let isPlaying = false;
-        let elapsedSeconds = 0;
-        let playbackInterval = null;
-
-        // Initialize App State
-        window.addEventListener('DOMContentLoaded', () => {
-            selectTrack(0, false); // Load first track into player without autoplaying
-        });
-
-        // Biography Modal Toggles
-        function openBioModal() {
-            document.getElementById('bioModal').classList.remove('hidden');
-        }
-
-        function closeBioModal() {
-            document.getElementById('bioModal').classList.add('hidden');
-        }
-
-
-        // Track Selector Logic
-        function selectTrack(index, autoPlay = true) {
-            if (index < 0 || index >= playlist.length) return;
-            
-            currentTrackIndex = index;
-            const track = playlist[currentTrackIndex];
-            
-            // Reset Timeline Counter
-            elapsedSeconds = 0;
-            
-            // Update Text Nodes
-            document.getElementById('currentTrackTitle').innerText = track.title;
-            document.getElementById('currentTrackArtist').innerText = track.artist;
-            document.getElementById('totalTimeLabel').innerText = track.duration;
-            document.getElementById('currentTimeLabel').innerText = "00:00";
-            document.getElementById('timelineSlider').value = 0;
-
-            // Highlight Active Visual Card Style
-            const cards = document.querySelectorAll('.song-card');
-
-            cards.forEach((card) => {
-                const cardTitle = card.getAttribute('data-title');
-                if (cardTitle === track.title) {
-                    card.classList.add('border-l-4', 'border-l-yellow-500', 'bg-white/10');
-                } else {
-                    card.classList.remove('border-l-4', 'border-l-yellow-500', 'bg-white/10');
-                }
-            });
-
-            if (autoPlay) {
-                isPlaying = false; 
-                togglePlayback();
-            } else {
-                setVisualPauseState();
-            }
-        }
-
-        // Play/Pause Action Router
-        function togglePlayback() {
-
-            isPlaying = !isPlaying;
-            const wave = document.getElementById('playerWaveContainer');
-            
-            if (isPlaying) {
-                wave.classList.remove('paused');
-                wave.classList.add('playing');
-                document.getElementById('playIcon').classList.add('hidden');
-                document.getElementById('pauseIcon').classList.remove('hidden');
-                
-                startTicker();
-            } else {
-                setVisualPauseState();
-            }
-        }
-
-        function setVisualPauseState() {
-            const wave = document.getElementById('playerWaveContainer');
-            wave.classList.remove('playing');
-            wave.classList.add('paused');
-
-            document.getElementById('pauseIcon').classList.add('hidden');
-            document.getElementById('playIcon').classList.remove('hidden');
-            clearInterval(playbackInterval);
-        }
-
-        // Simulated Playback Loop Timers
-        function startTicker() {
-            clearInterval(playbackInterval);
-            const currentTrack = playlist[currentTrackIndex];
-            
-            playbackInterval = setInterval(() => {
-                if (elapsedSeconds >= currentTrack.seconds) {
-                    nextTrack(); 
-                    return;
-                }
-                elapsedSeconds++;
-                updateTimelineUI(currentTrack);
-            }, 1000);
-        }
-
-
-        function updateTimelineUI(track) {
-            const percentage = (elapsedSeconds / track.seconds) * 100;
-            document.getElementById('timelineSlider').value = percentage;
-            
-            const minutes = Math.floor(elapsedSeconds / 60);
-            const seconds = elapsedSeconds % 60;
-            const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            document.getElementById('currentTimeLabel').innerText = timeString;
-        }
-
-        // Timeline Slider Handle Scrubbing
-        function seekTimeline(value) {
-            const track = playlist[currentTrackIndex];
-            elapsedSeconds = Math.floor((value / 100) * track.seconds);
-            document.getElementById('currentTimeLabel').innerText = 
-                `${Math.floor(elapsedSeconds / 60).toString().padStart(2, '0')}:${(elapsedSeconds % 60).toString().padStart(2, '0')}`;
-        }
-
-        // Playlist Navigation Array Index Shifts
-
-        function nextTrack() {
-            let nextIndex = currentTrackIndex + 1;
-            if (nextIndex >= playlist.length) nextIndex = 0; 
-            selectTrack(nextIndex);
-        }
-
-        function prevTrack() {
-            let prevIndex = currentTrackIndex - 1;
-            if (prevIndex < 0) prevIndex = playlist.length - 1; 
-            selectTrack(prevIndex);
-        }
-
-        // Advanced Multipurpose Filtering & Dynamic Search Engine
-        function filterSongs() {
-            const query = document.getElementById('searchBar').value.toLowerCase().trim();
-            const originalGridCards = document.querySelectorAll('#songsContainer .song-card');
-            
-            let originalMatches = 0;
-            
-
-            // 1. Filter Top 15 Hardcoded Grid
-            originalGridCards.forEach(card => {
-                const title = card.getAttribute('data-title').toLowerCase();
-                if (title.includes(query)) {
-                    card.style.display = "flex";
-                    originalMatches++;
-                } else {
-                    card.style.display = "none";
-                }
-            });
-
-            // 2. Handle Search for Other Congregational Louvores (Indexes 15+)
-            const otherSongsSection = document.getElementById('otherSongsSection');
-            const otherSongsContainer = document.getElementById('otherSongsContainer');
-            const noResultsContainer = document.getElementById('noResultsContainer');
-            
-            if (query === "") {
-                otherSongsSection.classList.add('hidden');
-                otherSongsContainer.innerHTML = "";
-
-                noResultsContainer.classList.add('hidden');
-                noResultsContainer.innerHTML = "";
-                return;
-            }
-
-            let otherHTML = "";
-            let otherMatches = 0;
-
-            for (let i = 15; i < playlist.length; i++) {
-                const track = playlist[i];
-                if (track.title.toLowerCase().includes(query) || track.artist.toLowerCase().includes(query)) {
-                    otherMatches++;
-                    
-                    const isActive = (currentTrackIndex === i);
-                    const activeClasses = isActive ? 'border-l-4 border-l-yellow-500 bg-white/10' : 'border-l-4 border-l-slate-600';
-                    
-                    otherHTML += `
-                        <div class="song-card p-5 rounded-2xl glass-card flex flex-col justify-between gap-4 cursor-pointer ${activeClasses}" data-title="${track.title}" onclick="selectTrack(${i})">
-                            <div class="flex items-start justify-between">
-
-                                <div class="flex gap-4 items-center">
-                                    <span class="w-8 h-8 rounded-lg bg-white/5 text-slate-400 flex items-center justify-center font-bold text-xs">EXT</span>
-                                    <div>
-                                        <h3 class="font-bold text-white text-lg leading-snug tracking-wide">${track.title}</h3>
-                                        <p class="text-xs text-slate-400 mt-0.5">${track.artist}</p>
-                                    </div>
-                                </div>
-                                <span class="text-[9px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-slate-500/10 text-slate-400 border border-slate-500/20">Harpa/Adoração</span>
-                            </div>
-                            <div class="flex items-center justify-between border-t border-white/5 pt-3 mt-1">
-                                <span class="text-xs font-medium text-slate-500">${track.source}</span>
-                                <a href="${track.href}" target="_blank" onclick="event.stopPropagation();" class="inline-flex items-center gap-1 text-xs text-yellow-400 font-semibold hover:underline">
-                                    Letra Completa
-                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                                </a>
-                            </div>
-                        </div>
-                    `;
-                }
-
-            }
-
-            if (otherMatches > 0) {
-                otherSongsContainer.innerHTML = otherHTML;
-                otherSongsSection.classList.remove('hidden');
-            } else {
-                otherSongsSection.classList.add('hidden');
-                otherSongsContainer.innerHTML = "";
-            }
-
-            // 3. Global Web Search Fallback if completely empty locally
-            if (originalMatches === 0 && otherMatches === 0) {
-                noResultsContainer.innerHTML = `
-                    <div class="p-8 rounded-2xl glass-card text-center max-w-md mx-auto mt-12 border border-white/10">
-                        <svg class="w-12 h-12 text-slate-500 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
-                        <h3 class="font-bold text-white text-base">Louvor não localizado na lista</h3>
-                        <p class="text-xs text-slate-400 mt-1 mb-5">Não encontrou o que procurava? Faça uma pesquisa global direta na base de letras oficial da web.</p>
-
-                        <a href="https://letras.mus.br{encodeURIComponent(query)}" target="_blank" 
-                           class="inline-flex items-center gap-2 text-xs bg-yellow-400 text-slate-900 font-bold px-5 py-2.5 rounded-xl hover:scale-105 transition-all shadow-md shadow-yellow-400/10">
-                            Pesquisar Louvor na Web
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                        </a>
-                    </div>
-                `;
-                noResultsContainer.classList.remove('hidden');
-            } else {
-                noResultsContainer.innerHTML = "";
-                noResultsContainer.classList.add('hidden');
-            }
-        }
-    </script>
-</body>
-</html>
+        function toggleFavorite(button, title) {
+            button.classList.toggle('active');
+            const toast = document.getElementById('toast');
 
 
