@@ -1,0 +1,9 @@
+"contributes": {
+    "commands": [
+        {
+            "command": "cancaoLouvor.start",
+            "title": "Canção e Louvor: Ativar Modo Devocional",
+            "category": "Music"
+        }
+    ]
+}
