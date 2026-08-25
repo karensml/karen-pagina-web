@@ -1,4 +1,5 @@
 "contributes": {
+}
     "commands": [
         {
             "command": "cancaoLouvor.start",
@@ -6,4 +7,4 @@
             "category": "Music"
         }
     ]
-}
+
